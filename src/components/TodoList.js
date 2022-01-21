@@ -2,7 +2,7 @@ import { useContext } from "react";
 import TodosContext from "../context";
 
 export default function TodoList() {
-  const { state } = useContext(TodosContext);
+  const { state, dispatch } = useContext(TodosContext);
 
   const title =
     state.todos.length > 0 ? `${state.todos.length} Todos` : "Nothing To Do!";
@@ -16,7 +16,16 @@ export default function TodoList() {
             key={todo.id}
             className="flex items-center bg-indigo-400 hover:bg-indigo-600  my-2 py-4"
           >
-            <span className="flex-1 ml-12 cursor-pointer">{todo.text}</span>
+            <span
+              onDoubleClick={() =>
+                dispatch({ type: "TOGGLE_TODO", payload: todo })
+              }
+              className={`flex-1 ml-12 cursor-pointer ${
+                todo.complete && "line-through text-black"
+              }`}
+            >
+              {todo.text}
+            </span>
             <button>
               <img
                 src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png"
@@ -24,12 +33,14 @@ export default function TodoList() {
                 className="h-6"
               />
             </button>
-            <button>
+            <button
+              onClick={() => dispatch({ type: "REMOVE_TODO", payload: todo })}
+            >
               <img
                 src="https://img.icons8.com/ios-glyphs/30/000000/filled-trash.png"
                 alt="Delete icon"
                 className="h-6"
-              />{" "}
+              />
             </button>
           </li>
         ))}
