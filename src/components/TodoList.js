@@ -26,7 +26,11 @@ export default function TodoList() {
             >
               {todo.text}
             </span>
-            <button>
+            <button
+              onClick={() =>
+                dispatch({ type: "SET_CURRENT_TODO", payload: todo })
+              }
+            >
               <img
                 src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png"
                 alt="Edit Icon"
