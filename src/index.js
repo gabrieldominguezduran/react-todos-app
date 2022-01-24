@@ -1,4 +1,4 @@
-import React, { useContext, useReducer } from "react";
+import React, { useContext, useReducer, useEffect } from "react";
 import ReactDOM from "react-dom";
 import reportWebVitals from "./reportWebVitals";
 
@@ -12,6 +12,7 @@ const App = () => {
   const initialState = useContext(TodosContext);
   const [state, dispatch] = useReducer(todosReducer, initialState);
 
+  localStorage.setItem("todos", JSON.stringify(state.todos));
   return (
     <TodosContext.Provider value={{ state, dispatch }}>
       <TodoForm />

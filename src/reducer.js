@@ -3,6 +3,12 @@ import { v4 as uuid } from "uuid";
 export default function reducer(state, action) {
   switch (action.type) {
     case "ADD_TODO":
+      if (!action.payload) {
+        return state;
+      }
+      if (state.todos.findIndex((t) => t.text === action.payload) > -1) {
+        return state;
+      }
       const newTodo = {
         id: uuid(),
         text: action.payload,
@@ -32,6 +38,12 @@ export default function reducer(state, action) {
         todos: toogleTodos,
       };
     case "UPDATE_TODO":
+      if (!action.payload) {
+        return state;
+      }
+      if (state.todos.findIndex((t) => t.text === action.payload) > -1) {
+        return state;
+      }
       const updatedTodo = { ...state.currentTodo, text: action.payload };
       const todoIndex = state.todos.findIndex(
         (t) => t.id === state.currentTodo.id
@@ -51,8 +63,11 @@ export default function reducer(state, action) {
       const filteredTodos = state.todos.filter(
         (t) => t.id !== action.payload.id
       );
+      const isRemovedTodo =
+        state.currentTodo.id === action.payload.id ? {} : state.currentTodo;
       return {
         ...state,
+        currentTodo: isRemovedTodo,
         todos: filteredTodos,
       };
     default:
